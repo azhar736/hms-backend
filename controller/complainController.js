@@ -2,7 +2,7 @@ const Complain = require("../models/Complain");
 const User = require("../models/user");
 
 const makeComplain = async (req, res) => {
-  const { userId } = req.body;
+  const { userId, complainMessage } = req.body;
   try {
     const user = await User.findOne({ _id: userId });
     if (user) {

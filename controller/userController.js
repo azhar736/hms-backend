@@ -61,21 +61,12 @@ const loginUser = async (req, res) => {
   }
 };
 const updateUser = async (req, res) => {
-  const { email, name, password, confirmPassword, roomId, isActive, id } =
-    req.body;
+  // const { email, name, password, confirmPassword, roomId, isActive, id } =
+  //   req.body;
   try {
-    const newUser = await User.findByIdAndUpdate(
-      id,
-      {
-        name: name,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-        roomId: roomId,
-        isActive: isActive,
-      },
-      { new: true }
-    );
+    const newUser = await User.findByIdAndUpdate(req.body.id, req.body, {
+      new: true,
+    });
     res.send({ success: true, data: newUser });
   } catch (error) {
     console.log(error.message);

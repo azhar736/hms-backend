@@ -1,4 +1,5 @@
 const Room = require("../models/Room");
+const User = require("../models/user");
 
 const addRoom = async (req, res) => {
   const { totalSeates, seatsRemaining, price, bookedByUser, isBooked } =
@@ -55,7 +56,13 @@ const bookRoom = async (req, res) => {
       { bookedByUser, isBooked: true },
       { new: true }
     );
-    res.send({ success: true, data: bookedRoom });
+    const userUpdated = await User.findByIdAndUpdate(
+      bookedByUser,
+      { roomId: bookedRoom._id },
+      { new: true }
+    );
+    if (userUpdated && bookedRoom)
+      res.send({ success: true, data: bookedRoom });
   } catch (error) {
     res.send({ success: false, error: error.message });
   }

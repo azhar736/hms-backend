@@ -19,4 +19,22 @@ const getDetails = async (req, res) => {
     res.send({ success: false, message: error.message });
   }
 };
-module.exports = { addDetail, getDetails };
+
+const updateDetail = async (req, res) => {
+  const { breakFastTime, lunchTime, dinnerTime, emergencyContactNumber } =
+    req.body;
+  try {
+    const deleteDetail = await HostelDetails.deleteMany();
+    // res.send(deleteDetail);
+    const addnewDetail = await new HostelDetails({
+      breakFastTime,
+      lunchTime,
+      dinnerTime,
+      emergencyContactNumber,
+    }).save();
+    res.send(addnewDetail);
+  } catch (error) {
+    res.send({ success: false, message: error.message });
+  }
+};
+module.exports = { addDetail, getDetails, updateDetail };
