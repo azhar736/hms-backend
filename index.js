@@ -11,6 +11,9 @@ const complainRoutes = require("./routes/complainRoutes");
 
 dbconnection();
 const app = express();
+app.get("/", (req, res) => {
+  res.send("hello world!");
+});
 app.use(cors());
 app.use(bodyParser.json());
 app.use(userRoutes);
