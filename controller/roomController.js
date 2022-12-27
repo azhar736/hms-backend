@@ -19,7 +19,7 @@ const addRoom = async (req, res) => {
 };
 const allRooms = async (req, res) => {
   try {
-    const allrooms = await Room.find({});
+    const allrooms = await Room.find({ isBooked: false });
     res.send({ success: true, data: allrooms });
   } catch (error) {
     res.send({ success: false, error: error.message });
@@ -49,13 +49,25 @@ const updateRoom = async (req, res) => {
   }
 };
 const bookRoom = async (req, res) => {
-  const { bookedByUser, id } = req.body;
+  const { bookedByUser, id, noOfseats } = req.body;
   try {
     const bookedRoom = await Room.findByIdAndUpdate(
       id,
-      { bookedByUser, isBooked: true },
+      {
+        bookedByUser,
+        seatsRemaining: bookedRoom.seatsRemaining - noOfseats,
+      },
       { new: true }
     );
+    if (bookedRoom.totalSeates - bookedRoom.seatsRemaining === 0) {
+      const updateRoom = await Room.findByIdAndUpdate(
+        id,
+        {
+          isBooked: true,
+        },
+        { new: true }
+      );
+    }
     const userUpdated = await User.findByIdAndUpdate(
       bookedByUser,
       { roomId: bookedRoom._id },
