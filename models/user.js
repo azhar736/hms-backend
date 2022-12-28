@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     },
   ],
   isAuthenticated: { type: Boolean },
-  billPaid: { type: Boolean },
+  billPaid: { type: Boolean, default: false },
   totalBill: { type: Number, default: 0 },
   accountType: {
     type: String,

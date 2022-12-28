@@ -8,7 +8,6 @@ const mealRoutes = require("./routes/mealRoutes");
 const roomRoutes = require("./routes/roomRoutes");
 const hostelDetailRoutes = require("./routes/hostelDetail");
 const complainRoutes = require("./routes/complainRoutes");
-
 dbconnection();
 const app = express();
 app.get("/", (req, res) => {

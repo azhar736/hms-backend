@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const HostelDetails = require("../models/HostelDetails");
 const addUser = async (req, res) => {
   const {
     email,
@@ -92,5 +93,39 @@ const singleUser = async (req, res) => {
     res.send({ success: false, message: error.message });
   }
 };
-
-module.exports = { addUser, loginUser, updateUser, singleUser, allUsers };
+const markAttendence = async (req, res) => {
+  const { userId, noOfUnits } = req.body;
+  var bill = 0;
+  try {
+    const { unitPrice } = await HostelDetails.findOne({
+      unitPrice: { $gt: 0 },
+    });
+    const { totalBill } = await User.findOne({ _id: userId });
+    if (unitPrice && totalBill) {
+      bill = totalBill + noOfUnits * unitPrice;
+      const updateUserBill = await User.findByIdAndUpdate(
+        userId,
+        { totalBill: bill },
+        { new: true }
+      );
+      res.send({ success: true, data: updateUserBill });
+    }
+  } catch (error) {
+    res.send({ success: false, message: error.message });
+  }
+};
+const billPaid = async (req, res) => {
+  // const { billImage } = req.file;
+  // const { studenId, totalBill } = req.body;
+  try {
+  } catch (error) {}
+};
+module.exports = {
+  addUser,
+  loginUser,
+  updateUser,
+  singleUser,
+  allUsers,
+  markAttendence,
+  billPaid,
+};

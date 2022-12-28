@@ -1,9 +1,18 @@
 const HostelDetails = require("../models/HostelDetails");
 const addDetail = async (req, res) => {
-  const { hostelTimming, emergencyContactNumber } = req.body;
+  const {
+    breakFastTime,
+    lunchTime,
+    dinnerTime,
+    unitPrice,
+    emergencyContactNumber,
+  } = req.body;
   try {
     const newHostelDetails = await new HostelDetails({
-      hostelTimming,
+      breakFastTime,
+      lunchTime,
+      dinnerTime,
+      unitPrice,
       emergencyContactNumber,
     }).save();
     if (newHostelDetails) res.send({ success: true, data: newHostelDetails });
@@ -21,8 +30,13 @@ const getDetails = async (req, res) => {
 };
 
 const updateDetail = async (req, res) => {
-  const { breakFastTime, lunchTime, dinnerTime, emergencyContactNumber } =
-    req.body;
+  const {
+    breakFastTime,
+    lunchTime,
+    dinnerTime,
+    emergencyContactNumber,
+    unitPrice,
+  } = req.body;
   try {
     const deleteDetail = await HostelDetails.deleteMany();
     // res.send(deleteDetail);
@@ -31,6 +45,7 @@ const updateDetail = async (req, res) => {
       lunchTime,
       dinnerTime,
       emergencyContactNumber,
+      unitPrice,
     }).save();
     res.send(addnewDetail);
   } catch (error) {
