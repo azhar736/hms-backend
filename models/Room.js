@@ -15,6 +15,17 @@ const roomSchema = new mongoose.Schema({
   seatsRemaining: {
     type: Number,
   },
+  title: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  image: [
+    {
+      type: String,
+    },
+  ],
   isBooked: { type: Boolean },
 });
 module.exports = mongoose.model("Room", roomSchema);

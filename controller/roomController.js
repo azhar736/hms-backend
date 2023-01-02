@@ -2,8 +2,16 @@ const Room = require("../models/Room");
 const User = require("../models/user");
 
 const addRoom = async (req, res) => {
-  const { totalSeates, seatsRemaining, price, bookedByUser, isBooked } =
-    req.body;
+  const {
+    totalSeates,
+    seatsRemaining,
+    price,
+    bookedByUser,
+    isBooked,
+    title,
+    description,
+    image,
+  } = req.body;
   try {
     const newRoom = await new Room({
       totalSeates,
@@ -11,6 +19,8 @@ const addRoom = async (req, res) => {
       price,
       bookedByUser,
       isBooked,
+      title,
+      description,
     }).save();
     res.send({ success: true, data: newRoom });
   } catch (error) {
@@ -35,12 +45,28 @@ const singleRoom = async (req, res) => {
   }
 };
 const updateRoom = async (req, res) => {
-  const { totalSeates, seatsRemaining, price, bookedByUser, isBooked, id } =
-    req.body;
+  const {
+    totalSeates,
+    seatsRemaining,
+    price,
+    bookedByUser,
+    isBooked,
+    title,
+    description,
+    id,
+  } = req.body;
   try {
     const newRoom = await Room.findByIdAndUpdate(
       id,
-      { totalSeates, seatsRemaining, price, bookedByUser, isBooked },
+      {
+        totalSeates,
+        seatsRemaining,
+        price,
+        bookedByUser,
+        isBooked,
+        title,
+        description,
+      },
       { new: true }
     );
     res.send({ success: true, data: newRoom });
