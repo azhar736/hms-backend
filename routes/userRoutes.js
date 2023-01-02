@@ -7,9 +7,11 @@ const {
   singleUser,
   markAttendence,
   billPaid,
+  logoutUser,
 } = require("../controller/userController");
 router.post("/addUser", addUser);
 router.post("/loginUser", loginUser);
+router.post("/logoutUser", logoutUser);
 router.patch("/updateUser", updateUser);
 router.get("/allUsers", allUsers);
 router.get("/singleUser", singleUser);

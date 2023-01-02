@@ -61,6 +61,23 @@ const loginUser = async (req, res) => {
     res.send({ success: false, error: error.message });
   }
 };
+
+const logoutUser = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const logout = await User.findByIdAndUpdate(id, {
+      isAuthenticated: false,
+      tokens: [],
+    });
+    // const clearToken = await User.findOneAndDelete(id, tokens);
+    if (logout) {
+      res.send({ success: true, data: "Successfully Logout" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.send({ success: false, error: error.message });
+  }
+};
 const updateUser = async (req, res) => {
   // const { email, name, password, confirmPassword, roomId, isActive, id } =
   //   req.body;
@@ -123,6 +140,7 @@ const billPaid = async (req, res) => {
 module.exports = {
   addUser,
   loginUser,
+  logoutUser,
   updateUser,
   singleUser,
   allUsers,
