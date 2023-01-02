@@ -42,13 +42,13 @@ const loginUser = async (req, res) => {
       if (isMatch) {
         const token = await existUser.generateToken();
         if (token) {
-          const logedinuser = await User.findOneAndUpdate(
+          const { tokens } = await User.findOneAndUpdate(
             { email: email },
             { isAuthenticated: true },
             { new: true }
           );
 
-          res.send({ success: true, data: logedinuser });
+          res.send({ success: true, authToken: tokens[0].token });
         }
       } else {
         res.send({ success: false, message: "invalid credentials" });
