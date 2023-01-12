@@ -77,30 +77,44 @@ const updateRoom = async (req, res) => {
 const bookRoom = async (req, res) => {
   const { bookedByUser, id, noOfseats } = req.body;
   try {
-    const bookedRoom = await Room.findByIdAndUpdate(
-      id,
-      {
-        bookedByUser,
-        seatsRemaining: bookedRoom.seatsRemaining - noOfseats,
-      },
-      { new: true }
-    );
-    if (bookedRoom.totalSeates - bookedRoom.seatsRemaining === 0) {
-      const updateRoom = await Room.findByIdAndUpdate(
+    var { seatsRemaining } = await Room.findOne({ _id: id });
+    if (seatsRemaining) {
+      console.log(`seatsRemaining: ${seatsRemaining}`);
+      var bookedRoom = await Room.findByIdAndUpdate(
         id,
         {
-          isBooked: true,
+          bookedByUser,
+          seatsRemaining: seatsRemaining - noOfseats,
         },
         { new: true }
       );
+      if (bookedRoom?.seatsRemaining === 0) {
+        console.log("when all room is booked");
+        const updateRoom = await Room.findByIdAndUpdate(
+          id,
+          {
+            isBooked: true,
+          },
+          { new: true }
+        );
+      }
+      const userUpdated = await User.findByIdAndUpdate(
+        bookedByUser,
+        { roomId: id },
+        { new: true }
+      );
+      console.log("UPDATED USER ::", userUpdated);
+      console.log("BOOKED ROOM ::", bookedRoom);
+      if (userUpdated && bookedRoom) {
+        console.log("user updated AND BOOKED ROOM");
+        res.send({ success: true, data: bookedRoom });
+      } else {
+        console.log("user not updated AND BOOKED ROOM");
+        res.send({ success: false, error: "something went wrong" });
+      }
+    } else {
+      res.send({ success: false, error: "room  not found" });
     }
-    const userUpdated = await User.findByIdAndUpdate(
-      bookedByUser,
-      { roomId: bookedRoom._id },
-      { new: true }
-    );
-    if (userUpdated && bookedRoom)
-      res.send({ success: true, data: bookedRoom });
   } catch (error) {
     res.send({ success: false, error: error.message });
   }
