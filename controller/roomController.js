@@ -36,6 +36,7 @@ const allRooms = async (req, res) => {
   }
 };
 const singleRoom = async (req, res) => {
+  console.log(req.body.id);
   try {
     const allrooms = await Room.findOne({ _id: req.body.id });
     console.log(allrooms);
@@ -89,7 +90,6 @@ const bookRoom = async (req, res) => {
         { new: true }
       );
       if (bookedRoom?.seatsRemaining === 0) {
-        console.log("when all room is booked");
         const updateRoom = await Room.findByIdAndUpdate(
           id,
           {
