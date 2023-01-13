@@ -8,7 +8,7 @@ const {
 } = require("../controller/roomController");
 router.post("/addRoom", addRoom);
 router.get("/allRooms", allRooms);
-router.get("/singleRoom", singleRoom);
+router.post("/singleRoom", singleRoom);
 router.put("/updateRoom", updateRoom);
 router.post("/bookRoom", bookRoom);
 module.exports = router;

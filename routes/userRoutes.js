@@ -14,7 +14,7 @@ router.post("/loginUser", loginUser);
 router.post("/logoutUser", logoutUser);
 router.patch("/updateUser", updateUser);
 router.get("/allUsers", allUsers);
-router.get("/singleUser", singleUser);
+router.post("/singleUser", singleUser);
 router.post("/markAttendence", markAttendence);
 router.post("/billPaid", billPaid);
 

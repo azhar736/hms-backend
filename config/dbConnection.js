@@ -8,7 +8,7 @@ const dbconnection = () => {
       console.log("connected to the database successfully");
     })
     .catch((e) => {
-      console.log("connection to the database failed");
+      console.log("connection to the database failed", e.message);
     });
 };
 module.exports = dbconnection;

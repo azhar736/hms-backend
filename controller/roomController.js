@@ -40,6 +40,8 @@ const singleRoom = async (req, res) => {
   try {
     const allrooms = await Room.findOne({ _id: req.body.id });
     if (allrooms) res.send({ success: true, data: allrooms });
+    // const delte=await User.deleteMany();
+    // if (delte) res.send({ success: true, data: "dfghjkjgfdfghj"})
   } catch (error) {
     res.send({ success: false, error: error.message });
   }
