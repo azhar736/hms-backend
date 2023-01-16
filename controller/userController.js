@@ -119,11 +119,21 @@ const markAttendence = async (req, res) => {
   const { userId, noOfUnits } = req.body;
   var bill = 0;
   try {
-    const { unitPrice } = await HostelDetails.findOne({
-      unitPrice: { $gt: 0 },
-    });
+    // const { unitPrice } = await HostelDetails.findOne({
+    //   unitPrice: { $gt: 0 },
+    // });
+    const unitPrice = 120;
     const { totalBill } = await User.findOne({ _id: userId });
-    if (unitPrice && totalBill) {
+    if (totalBill === 0) {
+      const totalUnit = noOfUnits * unitPrice;
+      bill = totalBill + totalUnit;
+      const updateUserBill = await User.findByIdAndUpdate(
+        userId,
+        { totalBill: bill },
+        { new: true }
+      );
+      res.send({ success: true, data: updateUserBill });
+    } else {
       bill = totalBill + noOfUnits * unitPrice;
       const updateUserBill = await User.findByIdAndUpdate(
         userId,
