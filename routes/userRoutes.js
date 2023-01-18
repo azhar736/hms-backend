@@ -8,6 +8,7 @@ const {
   markAttendence,
   billPaid,
   logoutUser,
+  setStatus,
 } = require("../controller/userController");
 router.post("/addUser", addUser);
 router.post("/loginUser", loginUser);
@@ -17,5 +18,6 @@ router.get("/allUsers", allUsers);
 router.post("/singleUser", singleUser);
 router.post("/markAttendence", markAttendence);
 router.post("/billPaid", billPaid);
+router.patch("/setStatus", setStatus);
 
 module.exports = router;

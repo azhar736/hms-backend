@@ -152,6 +152,25 @@ const billPaid = async (req, res) => {
   try {
   } catch (error) {}
 };
+
+const setStatus = async (req, res) => {
+  const { id, status } = req.body;
+  console.log(req.body);
+  try {
+    const userStatus = await User.findByIdAndUpdate(
+      id,
+      {
+        isActive: status,
+      },
+      { new: true }
+    );
+
+    res.send({ success: true, data: userStatus });
+  } catch (error) {
+    res.send({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   addUser,
   loginUser,
@@ -161,4 +180,5 @@ module.exports = {
   allUsers,
   markAttendence,
   billPaid,
+  setStatus,
 };

@@ -17,7 +17,10 @@ const userSchema = new mongoose.Schema({
   roomId: {
     type: String,
   },
-  isActive: { type: Boolean },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 
   tokens: [
     {
