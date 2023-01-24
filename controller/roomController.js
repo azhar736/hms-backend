@@ -39,7 +39,8 @@ const singleRoom = async (req, res) => {
   console.log("THIS IS ROOM ID FOR SINGLE ROOM", req.body);
   try {
     const allrooms = await Room.findOne({ _id: req.body.id });
-    if (allrooms) res.send({ success: true, data: allrooms });
+    if (allrooms) res.send({ success: true, data: allrooms })
+    else res.send({ success: false, message: "Room not found"});
     // const delte=await User.deleteMany();
     // if (delte) res.send({ success: true, data: "dfghjkjgfdfghj"})
   } catch (error) {
@@ -78,6 +79,7 @@ const updateRoom = async (req, res) => {
 };
 const bookRoom = async (req, res) => {
   const { bookedByUser, id, noOfseats } = req.body;
+  console.log("The Body Data===",req.body);
   try {
     var { seatsRemaining } = await Room.findOne({ _id: id });
     if (seatsRemaining) {
@@ -101,7 +103,7 @@ const bookRoom = async (req, res) => {
       }
       const userUpdated = await User.findByIdAndUpdate(
         bookedByUser,
-        { roomId: id },
+        { roomId: id},
         { new: true }
       );
       console.log("UPDATED USER ::", userUpdated);

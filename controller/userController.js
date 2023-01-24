@@ -108,13 +108,20 @@ const allUsers = async (req, res) => {
 };
 const singleUser = async (req, res) => {
   const { id } = req.body;
+  console.log("The USER IDDDDD",id);
   try {
     const allusers = await User.findOne({ _id: id });
     console.log(allusers);
-    if (allusers.length > 0) {
+    if (allusers) {
       const room = await Room.findOne({ _id: allusers.roomId });
-      const seatNumber = ((room.totalSeates + 1 ) - room.seatsRemaining);
-      res.send({ success: true, data: {...allusers,seatNumber} });
+      if(room){
+
+        const seatNumber = ((room.totalSeates + 1 ) - room.seatsRemaining);
+        res.send({ success: true, data: allusers,seatNumber });
+      }else{
+        res.send({ success: false, message:"room not found"})
+
+      }
     }
     else{
       res.send({ success: false, message:"user not found"})
