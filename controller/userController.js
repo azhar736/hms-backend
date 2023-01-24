@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const HostelDetails = require("../models/HostelDetails");
+const Room = require("../models/Room");
 const addUser = async (req, res) => {
   const {
     email,
@@ -110,7 +111,14 @@ const singleUser = async (req, res) => {
   try {
     const allusers = await User.findOne({ _id: id });
     console.log(allusers);
-    res.send({ success: true, data: allusers });
+    if (allusers.length > 0) {
+      const room = await Room.findOne({ _id: allusers.roomId });
+      const seatNumber = ((room.totalSeates + 1 ) - room.seatsRemaining);
+      res.send({ success: true, data: {...allusers,seatNumber} });
+    }
+    else{
+      res.send({ success: false, message:"user not found"})
+    }
   } catch (error) {
     res.send({ success: false, message: error.message });
   }
