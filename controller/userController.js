@@ -186,6 +186,22 @@ const setStatus = async (req, res) => {
   }
 };
 
+const deleteUser=async(req,res)=>{
+  try {
+    console.log("The USER IDDDD",req.body);
+    const {id}=req.body;
+  const user=await User.findByIdAndDelete(id);
+  if(user){
+  res.send({success:true,message:"User has been deleted successfully"})
+  }
+  else{
+    res.send({succes:false,message:"User Did Not Exist"})
+  }
+  } catch (error) {
+    res.send({ success: false, message: error.message });
+  }
+}
+
 module.exports = {
   addUser,
   loginUser,
@@ -196,4 +212,5 @@ module.exports = {
   markAttendence,
   billPaid,
   setStatus,
+  deleteUser
 };
