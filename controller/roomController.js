@@ -81,7 +81,10 @@ const bookRoom = async (req, res) => {
   const { bookedByUser, id, noOfseats } = req.body;
   console.log("The Body Data===",req.body);
   try {
+    var room=await Room.findById(id);
+    console.log("The Room===",room);
     var { seatsRemaining } = await Room.findOne({ _id: id });
+    console.log("The Reamining No of Seats are====", seatsRemaining);
     if (seatsRemaining) {
       console.log(`seatsRemaining: ${seatsRemaining}`);
       var bookedRoom = await Room.findByIdAndUpdate(
@@ -116,7 +119,7 @@ const bookRoom = async (req, res) => {
         res.send({ success: false, error: "something went wrong" });
       }
     } else {
-      res.send({ success: false, error: "room  not found" });
+      res.send({ success: true, message:"Room Already Booked", data:room });
     }
   } catch (error) {
     res.send({ success: false, error: error.message });

@@ -15,8 +15,11 @@ const addUser = async (req, res) => {
   console.log(req.body);
   try {
     const existUser = await User.findOne({ email: email });
-    if (existUser) res.send({ success: false, message: "user already exists" });
-    if (password !== confirmPassword)
+    if (existUser){ 
+      res.send({ success: false, message: "user already exists" })
+    }
+    else{
+      if (password !== confirmPassword)
       res.send({ success: false, message: "password do not match" });
     const newUser = await new User({
       name: name,
@@ -24,10 +27,12 @@ const addUser = async (req, res) => {
       password: password,
       confirmPassword: confirmPassword,
       roomId: roomId,
-      isActive: isActive,
+      isActive: isActive, 
       accountType: accountType,
     }).save();
     res.send({ success: true, data: newUser });
+    }
+    
   } catch (error) {
     console.log(error.message);
     res.send({ success: false, message: "server error" });
@@ -60,7 +65,7 @@ const loginUser = async (req, res) => {
         res.send({ success: false, message: "invalid credentials" });
       }
     } else {
-      res.send({ success: false, message: "invalid credentials" });
+      res.send({ success: false, message: "User with this email did not exist, Please Register first" });
     }
   } catch (error) {
     console.log(error.message);
