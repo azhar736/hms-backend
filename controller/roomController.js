@@ -1,6 +1,5 @@
 const Room = require("../models/Room");
 const User = require("../models/user");
-
 const addRoom = async (req, res) => {
   const {
     totalSeates,
@@ -21,6 +20,7 @@ const addRoom = async (req, res) => {
       isBooked,
       title,
       description,
+      image,
     }).save();
     res.send({ success: true, data: newRoom });
   } catch (error) {
