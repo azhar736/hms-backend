@@ -8,6 +8,8 @@ const mealRoutes = require("./routes/mealRoutes");
 const roomRoutes = require("./routes/roomRoutes");
 const hostelDetailRoutes = require("./routes/hostelDetail");
 const complainRoutes = require("./routes/complainRoutes");
+const mongoose = require('mongoose');
+mongoose.set('strictQuery', true);
 dbconnection();
 const app = express();
 app.get("/", (req, res) => {

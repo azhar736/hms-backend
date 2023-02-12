@@ -29,7 +29,7 @@ const addRoom = async (req, res) => {
 };
 const allRooms = async (req, res) => {
   try {
-    const allrooms = await Room.find({ isBooked: false });
+    const allrooms = await Room.find();
     res.send({ success: true, data: allrooms });
   } catch (error) {
     res.send({ success: false, error: error.message });
