@@ -9,8 +9,10 @@ const addRoom = async (req, res) => {
     isBooked,
     title,
     description,
-    image,
   } = req.body;
+  // getting the image path
+  const image = req.file ? `Images/${req.file.filename}` : "";
+
   try {
     const newRoom = await new Room({
       totalSeates,
@@ -22,11 +24,13 @@ const addRoom = async (req, res) => {
       description,
       image,
     }).save();
+
     res.send({ success: true, data: newRoom });
   } catch (error) {
     res.send({ success: false, error: error.message });
   }
 };
+
 const allRooms = async (req, res) => {
   try {
     const allrooms = await Room.find();
@@ -38,9 +42,9 @@ const allRooms = async (req, res) => {
 const singleRoom = async (req, res) => {
   console.log("THIS IS ROOM ID FOR SINGLE ROOM", req.body);
   try {
-    const allrooms = await Room.findOne({ _id: req.body.id });
-    if (allrooms) res.send({ success: true, data: allrooms })
-    else res.send({ success: false, message: "Room not found"});
+    const singleRoom = await Room.findOne({ _id: req.body.id });
+    if (singleRoom) res.send({ success: true, data: singleRoom });
+    else res.send({ success: false, message: "Room not found" });
     // const delte=await User.deleteMany();
     // if (delte) res.send({ success: true, data: "dfghjkjgfdfghj"})
   } catch (error) {
@@ -79,10 +83,10 @@ const updateRoom = async (req, res) => {
 };
 const bookRoom = async (req, res) => {
   const { bookedByUser, id, noOfseats } = req.body;
-  console.log("The Body Data===",req.body);
+  console.log("The Body Data===", req.body);
   try {
-    var room=await Room.findById(id);
-    console.log("The Room===",room);
+    var room = await Room.findById(id);
+    console.log("The Room===", room);
     var { seatsRemaining } = await Room.findOne({ _id: id });
     console.log("The Reamining No of Seats are====", seatsRemaining);
     if (seatsRemaining) {
@@ -106,7 +110,7 @@ const bookRoom = async (req, res) => {
       }
       const userUpdated = await User.findByIdAndUpdate(
         bookedByUser,
-        { roomId: id},
+        { roomId: id },
         { new: true }
       );
       console.log("UPDATED USER ::", userUpdated);
@@ -119,7 +123,7 @@ const bookRoom = async (req, res) => {
         res.send({ success: false, error: "something went wrong" });
       }
     } else {
-      res.send({ success: true, message:"Room Already Booked", data:room });
+      res.send({ success: true, message: "Room Already Booked", data: room });
     }
   } catch (error) {
     res.send({ success: false, error: error.message });

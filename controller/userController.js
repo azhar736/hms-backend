@@ -15,24 +15,22 @@ const addUser = async (req, res) => {
   console.log(req.body);
   try {
     const existUser = await User.findOne({ email: email });
-    if (existUser){ 
-      res.send({ success: false, message: "user already exists" })
-    }
-    else{
+    if (existUser) {
+      res.send({ success: false, message: "user already exists" });
+    } else {
       if (password !== confirmPassword)
-      res.send({ success: false, message: "password do not match" });
-    const newUser = await new User({
-      name: name,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-      roomId: roomId,
-      isActive: isActive, 
-      accountType: accountType,
-    }).save();
-    res.send({ success: true, data: newUser });
+        res.send({ success: false, message: "password do not match" });
+      const newUser = await new User({
+        name: name,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+        roomId: roomId,
+        isActive: isActive,
+        accountType: accountType,
+      }).save();
+      res.send({ success: true, data: newUser });
     }
-    
   } catch (error) {
     console.log(error.message);
     res.send({ success: false, message: "server error" });
@@ -65,7 +63,10 @@ const loginUser = async (req, res) => {
         res.send({ success: false, message: "invalid credentials" });
       }
     } else {
-      res.send({ success: false, message: "User with this email did not exist, Please Register first" });
+      res.send({
+        success: false,
+        message: "User with this email did not exist, Please Register first",
+      });
     }
   } catch (error) {
     console.log(error.message);
@@ -113,23 +114,20 @@ const allUsers = async (req, res) => {
 };
 const singleUser = async (req, res) => {
   const { id } = req.body;
-  console.log("The USER IDDDDD",id);
+  console.log("The USER IDDDDD", id);
   try {
     const allusers = await User.findOne({ _id: id });
     console.log(allusers);
     if (allusers) {
       const room = await Room.findOne({ _id: allusers.roomId });
-      if(room){
-
-        const seatNumber = ((room.totalSeates + 1 ) - room.seatsRemaining);
-        res.send({ success: true, data: allusers,seatNumber });
-      }else{
-        res.send({ success: false, message:"room not found"})
-
+      if (room) {
+        const seatNumber = room.totalSeates + 1 - room.seatsRemaining;
+        res.send({ success: true, data: allusers, seatNumber });
+      } else {
+        res.send({ success: false, message: "room not found" });
       }
-    }
-    else{
-      res.send({ success: false, message:"user not found"})
+    } else {
+      res.send({ success: false, message: "user not found" });
     }
   } catch (error) {
     res.send({ success: false, message: error.message });
@@ -191,21 +189,23 @@ const setStatus = async (req, res) => {
   }
 };
 
-const deleteUser=async(req,res)=>{
+const deleteUser = async (req, res) => {
   try {
-    console.log("The USER IDDDD",req.body);
-    const {id}=req.body;
-  const user=await User.findByIdAndDelete(id);
-  if(user){
-  res.send({success:true,message:"User has been deleted successfully"})
-  }
-  else{
-    res.send({succes:false,message:"User Did Not Exist"})
-  }
+    console.log("The USER IDDDD", req.body);
+    const { id } = req.body;
+    const user = await User.findByIdAndDelete(id);
+    if (user) {
+      res.send({
+        success: true,
+        message: "User has been deleted successfully",
+      });
+    } else {
+      res.send({ succes: false, message: "User Did Not Exist" });
+    }
   } catch (error) {
     res.send({ success: false, message: error.message });
   }
-}
+};
 
 module.exports = {
   addUser,
@@ -217,5 +217,5 @@ module.exports = {
   markAttendence,
   billPaid,
   setStatus,
-  deleteUser
+  deleteUser,
 };
